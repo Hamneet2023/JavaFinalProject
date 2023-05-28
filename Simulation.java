@@ -15,10 +15,12 @@ public class Simulation {
 			while ((lines = reader.readLine()) != null) {
 				String[] parts = lines.split("=");
 				String name = parts[0];
+				//System.out.println(name);
 				int weight = Integer.parseInt(parts[1]);
+				//System.out.println(weight);
 				Item item = new Item(name, weight);
 				items.add(item);
-				// System.out.println(lines);
+			    //System.out.println(lines);
 			}
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -28,21 +30,52 @@ public class Simulation {
 		return items;
 	}
 	
-		public ArrayList<Rocket> loadU1(ArrayList<Item> items) {
-		    ArrayList<Rocket> rocket1 = new ArrayList<>();
-		    
-		    return rocket1;
-		}
+	public ArrayList<Rocket> loadU1(ArrayList<Item> items) {
+	// here was  showing error on R1 and R2 check screenshot giving me three possibilities
+	// add arguments as i did
+	// change constructor remove parameter.
+	//	create constructor  R1()
+        ArrayList<Rocket> rockets = new ArrayList<>();
+        R1 rocket = new R1(100000000, 10000, 18000, 0.05, 0.01);
+        for (Item item : items) {
+            if (rocket.canCarry(item)) {
+                rocket.carry(item);
+            } else {
+                rockets.add(rocket);
+                rocket = new R1(100000000, 10000, 18000, 0.05, 0.01);
+                rocket.carry(item);
+            }
+        }
+        rockets.add(rocket);
+        return rockets;
+    }
 	
-		public ArrayList<Rocket> loadU2(ArrayList<Item> items) {
-		    ArrayList<Rocket> rocket2 = new ArrayList<>();
-		   
-		    return rocket2;
-		}
-		
-		public void runSimulation(ArrayList<Rocket> rocket1,ArrayList<Rocket>rocket2) {
-			
-		}
+	public ArrayList<Rocket> loadU2(ArrayList<Item> items) {
+        ArrayList<Rocket> rockets = new ArrayList<>();
+        R2 rocket = new R2();
+        for (Item item : items) {
+            if (rocket.canCarry(item)) {
+                rocket.carry(item);
+            } else {
+                rockets.add(rocket);
+                rocket = new R2();
+                rocket.carry(item);
+            }
+        }
+        rockets.add(rocket);
+        return rockets;
+    }
+	
+	public int runSimulation(ArrayList<Rocket> rockets) {
+        int totalBudget = 0;
+        for (Rocket rocket : rockets) {
+            totalBudget += rocket.getRocketCost();
+            while (!rocket.launch() || !rocket.land()) {
+                totalBudget += rocket.getRocketCost();
+            }
+        }
+        return totalBudget;
+    }
 
-	
+
 }

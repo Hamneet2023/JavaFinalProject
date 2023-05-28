@@ -1,10 +1,9 @@
 package finalAssignment;
 
-public class R2 extends Rocket  {
+public class R2 extends Rocket {
 
-	public R2(int rocketCost, int rocketWeight, int maxWeight, double launchExplosionChance, double landingCrashChance,
-			int currentWeight) {
-		super(rocketCost, rocketWeight, maxWeight, launchExplosionChance, landingCrashChance, currentWeight);
+	public R2() {
+		super(120000000, 18000, 29000, 0.04, 0.08);
 	}
 
 }

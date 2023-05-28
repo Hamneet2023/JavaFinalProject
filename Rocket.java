@@ -1,5 +1,7 @@
 package finalAssignment;
 
+import java.util.Random;
+
 public class Rocket implements SpaceShip {
 	private int rocketCost;
 	private int rocketWeight;
@@ -8,38 +10,45 @@ public class Rocket implements SpaceShip {
 	private double landingCrashChance;
 	private int currentWeight;
 
-	public Rocket(int rocketCost2, int rocketWeight2, int maxWeight2, double launchExplosionChance2, double landingCrashChance2, int currentWeight2) {
-		super();
-		this.rocketCost = rocketCost;
+	public Rocket(int rocketCost, int rocketWeight, int maxWeight, double launchExplosionChance,
+			double landingCrashChance) {
+		this.setRocketCost(rocketCost);
 		this.rocketWeight = rocketWeight;
 		this.maxWeight = maxWeight;
 		this.launchExplosionChance = launchExplosionChance;
 		this.landingCrashChance = landingCrashChance;
-		this.currentWeight = currentWeight;
+		this.currentWeight = rocketWeight;
 	}
 
 	@Override
 	public boolean launch() {
-		double random = Math.random();
-        double chance = launchExplosionChance * ((double) currentWeight / maxWeight);
-        return random > chance;
+		double random = new Random().nextDouble();
+		return random >= launchExplosionChance;
 	}
 
 	@Override
 	public boolean land() {
-		double random = Math.random();
-        double chance = landingCrashChance * ((double) currentWeight / maxWeight);
-        return random > chance;
+		double random = new Random().nextDouble();
+		return random >= landingCrashChance;
 	}
 
 	@Override
 	public boolean canCarry(Item item) {
-    return currentWeight + item.getWeight() <= maxWeight;
+		return (currentWeight + item.getWeight()) <= maxWeight;
 	}
 
 	@Override
 	public void carry(Item item) {
-		 currentWeight += item.getWeight();
+		currentWeight += item.getWeight();
+
+	}
+
+	public int getRocketCost() {
+		return rocketCost;
+	}
+
+	public void setRocketCost(int rocketCost) {
+		this.rocketCost = rocketCost;
 	}
 
 }
